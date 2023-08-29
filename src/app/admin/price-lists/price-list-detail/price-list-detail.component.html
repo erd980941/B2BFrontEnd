@@ -1,0 +1,144 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Fiyat Listesi Detayı</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a routerLink="/admin">Anasayfa</a></li>
+              <li class="breadcrumb-item"><a routerLink="/price-lists">Fiyat Listesi</a></li>
+              <li class="breadcrumb-item active">Fiyat Listesi Detayı</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- Default box -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Fiyat Listesi Detayı</h3>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <button class="btn btn-primary" data-toggle="modal" data-target="#AddModal">Ürün Ekle</button>
+              <button class="btn btn-info mx-2" (click)="exportExcel()">Excel'e Aktar</button>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group offset-9">
+                <div class="input-group" data-widget="sidebar-search">
+                  <input [(ngModel)]="filterText" [ngModelOptions]="{standalone:true}" type="search" class="form-control" placeholder="Aranacak Kelime..">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <table class="table table-hovered" id="excel-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Ürün Adı</th>
+                    <th>Ürün Fiyatı</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let priceListDetail of priceListDetails |priceListDetailPipe:filterText let index=index">
+                <td>{{index+1}}</td>
+                <td>{{priceListDetail.productName}}</td>
+                <td>
+                    <input type="text" class="form-control" autocomplete="off" [(ngModel)]="priceListDetail.price" (ngModelOptions)="{standalone:true}">
+                </td>
+                <td>
+                  <button class="btn btn-primary mx-2" data-toggle="modal" (click)="update(priceListDetail)">Fiyat Listesi Güncelle</button>
+                  <button class="btn btn-danger" (click)="delete(priceListDetail)">Sil</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+          Footer
+        </div>
+        <!-- /.card-footer-->
+      </div>
+      <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+  </div>
+
+  <div class="modal fade" id="AddModal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ürün Ekle</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form #addForm="ngForm">
+            <div class="form-group">
+              <label for="">Ürün Adı</label>
+              <select name="" id="" class="form-control" ngModel name="productId" #productId required>
+                <option [value]="product.id" *ngFor="let product of products">{{product.name}}</option>
+              </select>
+              <div class="form-group">
+                <label for="">Ürün Fiyatı</label>
+                <input type="text" name="price" #price ngModel class="form-control" required min="0" placeholder="Fiyatı..">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" [disabled]="!addForm.valid" (click)="add(addForm)">Ürün Ekle</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="modal fade" id="UpdateModal" tabindex="-1" role="dialog"  aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ürün Güncelle</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form #updateForm="ngForm">
+            <div class="form-group">
+              <label for="">Fiyat Listesi Adı</label>
+              <input type="text" name="priceListName"  [(ngModel)]="priceList.name" [ngModelOptions]="{standalone:true}" class="form-control" required minlength="3" placeholder="Fiyat Listesi Adı..">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" [disabled]="!updateForm.valid" (click)="update()">Fiyat Listesi Güncelle</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="updateModalCloseBtn">Kapat</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
